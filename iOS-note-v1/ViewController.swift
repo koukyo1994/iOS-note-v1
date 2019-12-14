@@ -18,10 +18,13 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.imageView.image = UIImage(named: "Keisen.jpg")
         
         let canvas = PKCanvasView(frame: self.imageView.frame)
         view.addSubview(canvas)
         canvas.tool = PKInkingTool(.pen, color: .black, width: 20)
+        canvas.backgroundColor = .clear
+        canvas.isOpaque = false
         
         self.canvasView = canvas
         
@@ -36,16 +39,17 @@ class ViewController: UIViewController {
 
     
     @IBAction func detectText(_ sender: Any) {
-        let image = canvasView!.drawing.image(
-            from: canvasView!.bounds,
+        let drawing = self.canvasView!.drawing
+        var image = drawing.image(
+            from: self.canvasView!.bounds,
             scale: 1.0)
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        image = image.addBackGround()!
         let cgImage = image.cgImage
+
         let request = VNRecognizeTextRequest(completionHandler: self.detectTextHandler)
-        
         request.recognitionLevel = .accurate
-        request.recognitionLanguages = ["en_US"]
-        request.usesLanguageCorrection = false
+        request.recognitionLanguages = ["en_US", "ja_JP"]
+        request.usesLanguageCorrection = true
         
         let requests = [request]
         let imageRequestHandler = VNImageRequestHandler(cgImage: cgImage!, options: [:])
@@ -57,14 +61,38 @@ class ViewController: UIViewController {
             return
         }
         
+        var texts = [String]()
+        var points = [CGPoint]()
+        var boundingBoxes = [CGRect]()
+        
+        let height = self.imageView.bounds.height
+        let width = self.imageView.bounds.width
+        
         for observation in observations {
             let candidates = 1
+            let bbox = observation.boundingBox
             guard let bestCandidate = observation.topCandidates(candidates).first else {
                 continue
             }
-            print(bestCandidate.string)
-            print(bestCandidate.confidence)
+            
+            texts.append(bestCandidate.string)
+            points.append(
+                CGPoint(
+                    x: bbox.origin.x * width,
+                    y: (1.0 - bbox.origin.y - bbox.height) * height
+            ))
+            boundingBoxes.append(
+                CGRect(
+                    x: bbox.origin.x * width,
+                    y: (1.0 - bbox.origin.y - bbox.height - 0.02) * height,
+                    width: bbox.width * width,
+                    height: bbox.height * height)
+            )
         }
+        
+        var image = self.imageView.getImage()!
+        image = image.drawBoundingBox(boundingBoxes: boundingBoxes)!
+        self.imageView.image = image.drawDetectedText(texts: texts, points: points)
     }
 }
 
