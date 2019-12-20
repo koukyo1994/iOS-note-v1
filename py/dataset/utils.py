@@ -12,7 +12,7 @@ FONTNAMES = subprocess.run(
     shell=True).stdout.decode("utf-8").strip().split("\n")
 
 CUSTOM_FONTS = subprocess.run(
-    "fc-list | sed -r -e 's/^(.+custom.+): .*$/\\1/g'",
+    "fc-list | sed -r -e 's/^(.+): .*$/\\1/g' | grep custom",
     stdout=subprocess.PIPE,
     shell=True).stdout.decode("utf-8").strip().split("\n")
 
