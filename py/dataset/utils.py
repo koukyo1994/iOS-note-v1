@@ -60,7 +60,7 @@ def generate(width: int, height: int,
     while retry_count < 10:
         retry_count += 1
         fontname = choose_font()
-        fontsize = np.random.randint(8, 32)
+        fontsize = np.random.randint(12, 32)
         font = ImageFont.truetype(fontname, fontsize)
         text = choose_word()
         textsize_x, textsize_y = draw.textsize(text, font=font)
