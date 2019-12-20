@@ -11,6 +11,13 @@ FONTNAMES = subprocess.run(
     stdout=subprocess.PIPE,
     shell=True).stdout.decode("utf-8").strip().split("\n")
 
+CUSTOM_FONTS = subprocess.run(
+    "fc-list | sed -r -e 's/^(.+custom.+): .*$/\\1/g'",
+    stdout=subprocess.PIPE,
+    shell=True).stdout.decode("utf-8").strip().split("\n")
+
+FONTNAMES += CUSTOM_FONTS
+
 with open("/usr/share/dict/words") as f:
     WORDS = f.read().splitlines()
 
