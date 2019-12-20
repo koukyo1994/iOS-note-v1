@@ -1,3 +1,6 @@
+#!/bin/sh
+mkdir /usr/share/fonts/custom
+
 for d in `ls -1 fonts`
 do
   echo $d
