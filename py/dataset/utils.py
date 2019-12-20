@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw, ImageFont
 from typing import NamedTuple, Tuple, List
 
 FONTNAMES = subprocess.run(
-    "fc-list :lang=en | set -r -e 's/^(.+): .*$/\\1/g'",
+    "fc-list :lang=en | sed -r -e 's/^(.+): .*$/\\1/g'",
     stdout=subprocess.PIPE,
     shell=True).stdout.decode("utf-8").strip().split("\n")
 
