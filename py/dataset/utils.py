@@ -104,7 +104,7 @@ class MarkDownText:
         self.current_line += 1
         state = np.random.choice(
             np.arange(6),
-            p=LINE_TRANSITION[self.last_state])
+            p=LINE_TRANSITION[self.last_state.value])
         if self.last_state == LineState.COUNTING and \
                 state != LineState.COUNTING:
             self.counting = 1
