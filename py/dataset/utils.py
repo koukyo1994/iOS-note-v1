@@ -134,6 +134,9 @@ class MarkDownText:
             return texts
         elif state == LineState.LIST:
             n_words = np.random.choice(np.arange(3, 12))
+            fontsize = np.random.randint(15, 25)
+            fontname = choose_font()
+            font = ImageFont.truetype(fontname, fontsize)
             texts = [("*", font)]
             for _ in range(n_words):
                 word = choose_word()
@@ -144,6 +147,9 @@ class MarkDownText:
             return texts
         elif state == LineState.COUNTING:
             n_words = np.random.choice(np.arange(3, 12))
+            fontsize = np.random.randint(15, 25)
+            fontname = choose_font()
+            font = ImageFont.truetype(fontname, fontsize)
             texts = [(f"{self.counting}.", font)]
             self.counting += 1
             for _ in range(n_words):
