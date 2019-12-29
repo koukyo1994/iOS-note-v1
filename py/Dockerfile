@@ -1,8 +1,9 @@
 FROM python:3.6
+ENV LC_ALL=C.UTF-8
 
 RUN apt-get update -y && \
-    apt-get install -yq wget build-essential gcc zlib1g-dev && \
-    apt-get install -y apt-utils make curl fonts-ipafont wamerican && \
+    apt-get install -yq wget build-essential gcc zlib1g-dev ca-certificates && \
+    apt-get install -y apt-utils make curl fonts-ipafont wamerican gnupg2 && \
     apt-get install -yq git xz-utils file swig sudo software-properties-common
 
 RUN apt-get update \

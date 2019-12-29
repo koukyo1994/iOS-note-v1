@@ -201,3 +201,6 @@ iOSInjectionProject/
 
 # editor
 .vscode/
+
+# data
+*.png
