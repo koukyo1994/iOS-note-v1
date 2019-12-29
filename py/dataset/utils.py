@@ -247,3 +247,8 @@ def generate_markdown_like_image(width: int,
         img = AUGMENTOR.augment_image(np.asarray(image))
         image = Image.fromarray(img)
     return image, boxes
+
+
+if __name__ == "__main__":
+    image, _ = generate_markdown_like_image(1024, 1316, noise=False)
+    image.save("../images/sample.png")
